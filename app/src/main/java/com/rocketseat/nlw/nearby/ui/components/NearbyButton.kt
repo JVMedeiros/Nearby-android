@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import com.rocketseat.nlw.nearby.R
 import com.rocketseat.nlw.nearby.ui.theme.GreenBase
 import com.rocketseat.nlw.nearby.ui.theme.Typography
