@@ -62,3 +62,12 @@ private fun NearbyButtonNoTextPreview() {
 
     }
 }
+
+@Preview
+@Composable
+private fun NearbyButtonNoIconPreview() {
+    NearbyButton(modifier = Modifier, text = "Confirmar"
+    ) {
+
+    }
+}
