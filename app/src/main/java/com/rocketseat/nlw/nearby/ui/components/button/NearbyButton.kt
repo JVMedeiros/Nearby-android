@@ -1,4 +1,4 @@
-package com.rocketseat.nlw.nearby.ui.components
+package com.rocketseat.nlw.nearby.ui.components.button
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
