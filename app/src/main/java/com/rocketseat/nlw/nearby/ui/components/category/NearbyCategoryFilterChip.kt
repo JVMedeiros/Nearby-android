@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rocketseat.nlw.nearby.data.model.NearbyCategory
+import com.rocketseat.nlw.nearby.data.model.Category
 import com.rocketseat.nlw.nearby.ui.theme.Gray300
 import com.rocketseat.nlw.nearby.ui.theme.Gray400
 import com.rocketseat.nlw.nearby.ui.theme.GreenBase
@@ -22,7 +22,7 @@ import com.rocketseat.nlw.nearby.ui.theme.Typography
 @Composable
 fun NearbyCategoryFilterChip(
     modifier: Modifier = Modifier,
-    category: NearbyCategory,
+    category: Category,
     isSelected: Boolean,
     onClick: (isSelected: Boolean) -> Unit
 ) {
@@ -36,7 +36,7 @@ fun NearbyCategoryFilterChip(
         leadingIcon = {
             category.icon?.let {
                 Icon(
-                    modifier =  Modifier.size(16.dp),
+                    modifier = Modifier.size(16.dp),
                     painter = painterResource(id = it),
                     tint = if (isSelected) Color.White else Gray400,
                     contentDescription = "Ícone do Filtro de Categoria"
@@ -71,7 +71,7 @@ fun NearbyCategoryFilterChip(
 @Composable
 private fun NearbyCategoryFilterChipPreview() {
     NearbyCategoryFilterChip(
-        category = NearbyCategory(
+        category = Category(
             id = "1",
             name = "Alimentação"
         ),
@@ -85,7 +85,7 @@ private fun NearbyCategoryFilterChipPreview() {
 @Composable
 private fun NearbyCategoryFilterChipNotSelectedPreview() {
     NearbyCategoryFilterChip(
-        category = NearbyCategory(
+        category = Category(
             id = "1",
             name = "Entretenimento"
         ),
