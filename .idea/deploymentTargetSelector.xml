@@ -11,6 +11,12 @@
       <SelectionState runConfigName="NearbyMarketDetailsInfoPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="NearbyMarketDetailsRulesPreview">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="NearbyMarketDetailsCoupons">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
