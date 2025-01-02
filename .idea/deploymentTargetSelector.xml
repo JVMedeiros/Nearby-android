@@ -8,6 +8,9 @@
       <SelectionState runConfigName="NearbyCategoryFilterChipListPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="NearbyMarketDetailsInfoPreview">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
