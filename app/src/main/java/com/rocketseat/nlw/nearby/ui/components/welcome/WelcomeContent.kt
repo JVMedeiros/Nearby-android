@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rocketseat.nlw.nearby.R
-import com.rocketseat.nlw.nearby.ui.screen.WelcomeHowItWorksTip
 import com.rocketseat.nlw.nearby.ui.theme.Typography
 
 @Composable
