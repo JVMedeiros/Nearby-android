@@ -28,7 +28,6 @@ import com.rocketseat.nlw.nearby.data.model.mock.mockMarkets
 import com.rocketseat.nlw.nearby.ui.components.button.NearbyButton
 import com.rocketseat.nlw.nearby.ui.components.market_details.NearbyMarketDetailsCoupons
 import com.rocketseat.nlw.nearby.ui.components.market_details.NearbyMarketDetailsInfo
-import com.rocketseat.nlw.nearby.ui.components.market_details.NearbyMarketDetailsRules
 import com.rocketseat.nlw.nearby.ui.theme.Typography
 
 @Composable
@@ -78,14 +77,14 @@ fun MarketDetailsScreen(modifier: Modifier = Modifier, market: Market) {
                             .fillMaxWidth()
                             .padding(vertical = 24.dp)
                     )
-                    if (market.rules.isNotEmpty()) {
-                        NearbyMarketDetailsRules(rules = market.rules)
-                        HorizontalDivider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 24.dp)
-                        )
-                    }
+//                    if (market.rules.isNotEmpty()) {
+//                        NearbyMarketDetailsRules(rules = market.rules)
+//                        HorizontalDivider(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(vertical = 24.dp)
+//                        )
+//                    }
                     NearbyMarketDetailsCoupons(coupons = listOf("ABC1234"))
                 }
 
