@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.bundles.ktor.client)
     implementation(libs.kotlin.serialization)
     implementation(libs.navigation.compose)
     implementation(libs.maps.compose)
