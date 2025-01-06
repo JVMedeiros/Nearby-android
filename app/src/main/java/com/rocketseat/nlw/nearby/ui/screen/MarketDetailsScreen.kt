@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.rocketseat.nlw.nearby.R
 import com.rocketseat.nlw.nearby.data.model.Market
 import com.rocketseat.nlw.nearby.data.model.mock.mockMarkets
 import com.rocketseat.nlw.nearby.ui.components.button.NearbyButton
@@ -31,7 +32,7 @@ import com.rocketseat.nlw.nearby.ui.components.market_details.NearbyMarketDetail
 import com.rocketseat.nlw.nearby.ui.theme.Typography
 
 @Composable
-fun MarketDetailsScreen(modifier: Modifier = Modifier, market: Market) {
+fun MarketDetailsScreen(modifier: Modifier = Modifier, market: Market, onNavigateBack: () -> Unit) {
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -97,11 +98,18 @@ fun MarketDetailsScreen(modifier: Modifier = Modifier, market: Market) {
                 )
             }
         }
+        NearbyButton(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(24.dp),
+            iconRes = R.drawable.ic_arrow_left,
+            onClick = onNavigateBack
+        )
     }
 }
 
 @Preview
 @Composable
 private fun MarketDetailsScreenPreview() {
-    MarketDetailsScreen(market = mockMarkets.first())
+    MarketDetailsScreen(market = mockMarkets.first(), onNavigateBack = {})
 }
