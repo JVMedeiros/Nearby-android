@@ -50,7 +50,9 @@ class MainActivity : ComponentActivity() {
                     composable<Market> {
                         val selectedMarket = it.toRoute<Market>()
 
-                        MarketDetailsScreen(market = selectedMarket)
+                        MarketDetailsScreen(market = selectedMarket, onNavigateBack = {
+                            navController.popBackStack()
+                        })
                     }
                 }
             }
