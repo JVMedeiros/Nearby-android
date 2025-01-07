@@ -28,7 +28,12 @@ import com.rocketseat.nlw.nearby.ui.theme.Gray100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, onNavigateToMarketDetails: (Market) -> Unit) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
+    onNavigateToMarketDetails: (Market) -> Unit
+) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
     var isBottomSheetOpened by remember { mutableStateOf(true) }
 
@@ -80,5 +85,5 @@ fun HomeScreen(modifier: Modifier = Modifier, onNavigateToMarketDetails: (Market
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(onNavigateToMarketDetails = {})
+    HomeScreen(onNavigateToMarketDetails = {}, uiState = HomeUiState(), onEvent = {})
 }
