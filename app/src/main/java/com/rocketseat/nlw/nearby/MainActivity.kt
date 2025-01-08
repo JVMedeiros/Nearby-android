@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(
                             onNavigateToMarketDetails = { selectedMarket ->
                                 navController.navigate(selectedMarket)
-                            },
-                            uiState = homeUiState,
-                            onEvent = homeViewModel::onEvent
+                            }, uiState = homeUiState, onEvent = homeViewModel::onEvent
                         )
                     }
                     composable<Market> {
