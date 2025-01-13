@@ -100,78 +100,7 @@ fun HomeScreen(
                                 .minus(8.dp)
                         )
                 ) {
-                    GoogleMap(
-                        modifier = Modifier.fillMaxSize(),
-                        cameraPositionState = cameraPositionState,
-                        uiSettings = uiSettings
-                    ) {
-                        context.getDrawable(R.drawable.ic_user_location)?.let {
-                            Marker(
-                                state = MarkerState(position = mockUserLocation),
-                                icon = BitmapDescriptorFactory.fromBitmap(
-                                    it.toBitmap(
-                                        width = density.run { 72.dp.toPx() }.roundToInt(),
-                                        height = density.run { 72.dp.toPx() }.roundToInt()
-                                    )
-                                )
-                            )
-                        }
-
-                        if (!uiState.markets.isNullOrEmpty()) {
-                            context.getDrawable(R.drawable.img_pin)?.let {
-                                uiState.marketLocation?.toImmutableList()
-                                    ?.forEachIndexed { index, location ->
-                                        Marker(
-                                            state = MarkerState(position = mockUserLocation),
-                                            icon = BitmapDescriptorFactory.fromBitmap(
-                                                it.toBitmap(
-                                                    width = density.run { 36.dp.toPx() }
-                                                        .roundToInt(),
-                                                    height = density.run { 36.dp.toPx() }
-                                                        .roundToInt()
-                                                )
-                                            ),
-                                            title = uiState.markets[index].name
-                                        )
-                                    }.also {
-                                        coroutineScope.launch {
-                                            val allMarks = uiState.marketLocation?.plus(
-                                                mockUserLocation
-                                            )
-
-                                            val southwestPoint =
-                                                findSouthwestPoint(allMarks.orEmpty())
-                                            val northeastPoint =
-                                                findNortheastPoint(allMarks.orEmpty())
-
-                                            val centerPointLatitude =
-                                                (southwestPoint.latitude + northeastPoint.latitude) / 2
-                                            val centerPointLongitude =
-                                                (southwestPoint.longitude + northeastPoint.longitude) / 2
-
-                                            val cameraUpdate =
-                                                CameraUpdateFactory.newCameraPosition(
-                                                    CameraPosition(
-                                                        LatLng(
-                                                            centerPointLatitude,
-                                                            centerPointLongitude
-                                                        ),
-                                                        13f,
-                                                        0f,
-                                                        0f
-                                                    )
-                                                )
-                                            delay(200)
-                                            cameraPositionState.animate(
-                                                cameraUpdate,
-                                                durationMs = 500
-                                            )
-                                        }
-                                    }
-                            }
-                        }
-                    }
-
+                    NearbyGoogleMap(uiState = uiState)
                     if (!uiState.categories.isNullOrEmpty())
                         NearbyCategoryFilterChipList(
                             modifier = Modifier
@@ -186,6 +115,92 @@ fun HomeScreen(
                 }
             }
         )
+    }
+}
+
+@Composable
+fun NearbyGoogleMap(modifier: Modifier = Modifier, uiState: HomeUiState) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(mockUserLocation, 13f)
+    }
+    val uiSettings by remember {
+        mutableStateOf(MapUiSettings(zoomControlsEnabled = true))
+    }
+
+    GoogleMap(
+        modifier = modifier.fillMaxSize(),
+        cameraPositionState = cameraPositionState,
+        uiSettings = uiSettings
+    ) {
+        context.getDrawable(R.drawable.ic_user_location)?.let {
+            Marker(
+                state = MarkerState(position = mockUserLocation),
+                icon = BitmapDescriptorFactory.fromBitmap(
+                    it.toBitmap(
+                        width = density.run { 72.dp.toPx() }.roundToInt(),
+                        height = density.run { 72.dp.toPx() }.roundToInt()
+                    )
+                )
+            )
+        }
+
+        if (!uiState.markets.isNullOrEmpty()) {
+            context.getDrawable(R.drawable.img_pin)?.let {
+                uiState.marketLocation?.toImmutableList()
+                    ?.forEachIndexed { index, location ->
+                        Marker(
+                            state = MarkerState(position = mockUserLocation),
+                            icon = BitmapDescriptorFactory.fromBitmap(
+                                it.toBitmap(
+                                    width = density.run { 36.dp.toPx() }
+                                        .roundToInt(),
+                                    height = density.run { 36.dp.toPx() }
+                                        .roundToInt()
+                                )
+                            ),
+                            title = uiState.markets[index].name
+                        )
+                    }.also {
+                        coroutineScope.launch {
+                            val allMarks = uiState.marketLocation?.plus(
+                                mockUserLocation
+                            )
+
+                            val southwestPoint =
+                                findSouthwestPoint(allMarks.orEmpty())
+                            val northeastPoint =
+                                findNortheastPoint(allMarks.orEmpty())
+
+                            val centerPointLatitude =
+                                (southwestPoint.latitude + northeastPoint.latitude) / 2
+                            val centerPointLongitude =
+                                (southwestPoint.longitude + northeastPoint.longitude) / 2
+
+                            val cameraUpdate =
+                                CameraUpdateFactory.newCameraPosition(
+                                    CameraPosition(
+                                        LatLng(
+                                            centerPointLatitude,
+                                            centerPointLongitude
+                                        ),
+                                        13f,
+                                        0f,
+                                        0f
+                                    )
+                                )
+                            delay(200)
+                            cameraPositionState.animate(
+                                cameraUpdate,
+                                durationMs = 500
+                            )
+                        }
+                    }
+            }
+        }
     }
 }
 
