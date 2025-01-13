@@ -54,7 +54,6 @@ fun HomeScreen(
     onNavigateToMarketDetails: (Market) -> Unit
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
-    var isBottomSheetOpened by remember { mutableStateOf(true) }
 
     val configuration = LocalConfiguration.current
 
@@ -62,51 +61,49 @@ fun HomeScreen(
         onEvent(HomeUiEvent.OnFetchCategories)
     }
 
-    if (isBottomSheetOpened) {
-        BottomSheetScaffold(
-            modifier = modifier,
-            scaffoldState = bottomSheetState,
-            sheetContainerColor = Gray100,
-            sheetPeekHeight = configuration.screenHeightDp.dp * 0.5f,
-            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-            sheetContent = {
-                if (!uiState.markets.isNullOrEmpty())
-                    NearbyMarketCardList(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        markets = uiState.markets,
-                        onMarketClick = { selectedMarket ->
-                            onNavigateToMarketDetails(selectedMarket)
-                        }
-                    )
-            },
-            content = {
-                Box(
+    BottomSheetScaffold(
+        modifier = modifier,
+        scaffoldState = bottomSheetState,
+        sheetContainerColor = Gray100,
+        sheetPeekHeight = configuration.screenHeightDp.dp * 0.5f,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetContent = {
+            if (!uiState.markets.isNullOrEmpty())
+                NearbyMarketCardList(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(
-                            bottom = it
-                                .calculateBottomPadding()
-                                .minus(8.dp)
-                        )
-                ) {
-                    NearbyGoogleMap(uiState = uiState)
-                    if (!uiState.categories.isNullOrEmpty())
-                        NearbyCategoryFilterChipList(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 24.dp)
-                                .align(Alignment.TopStart),
-                            categories = uiState.categories,
-                            onSelectedCategoryChanged = { selectedCategory ->
-                                onEvent(HomeUiEvent.OnFetchMarkets(categoryId = selectedCategory.id))
-                            }
-                        )
-                }
+                        .padding(16.dp),
+                    markets = uiState.markets,
+                    onMarketClick = { selectedMarket ->
+                        onNavigateToMarketDetails(selectedMarket)
+                    }
+                )
+        },
+        content = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        bottom = it
+                            .calculateBottomPadding()
+                            .minus(8.dp)
+                    )
+            ) {
+                NearbyGoogleMap(uiState = uiState)
+                if (!uiState.categories.isNullOrEmpty())
+                    NearbyCategoryFilterChipList(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp)
+                            .align(Alignment.TopStart),
+                        categories = uiState.categories,
+                        onSelectedCategoryChanged = { selectedCategory ->
+                            onEvent(HomeUiEvent.OnFetchMarkets(categoryId = selectedCategory.id))
+                        }
+                    )
             }
-        )
-    }
+        }
+    )
 }
 
 @Composable
