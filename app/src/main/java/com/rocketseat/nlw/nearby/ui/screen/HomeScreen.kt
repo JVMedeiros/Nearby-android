@@ -57,9 +57,6 @@ fun HomeScreen(
     var isBottomSheetOpened by remember { mutableStateOf(true) }
 
     val configuration = LocalConfiguration.current
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-    val density = LocalDensity.current
 
     LaunchedEffect(true) {
         onEvent(HomeUiEvent.OnFetchCategories)
@@ -85,12 +82,6 @@ fun HomeScreen(
                     )
             },
             content = {
-                val cameraPositionState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(mockUserLocation, 13f)
-                }
-                val uiSettings by remember {
-                    mutableStateOf(MapUiSettings(zoomControlsEnabled = true))
-                }
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
