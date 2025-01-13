@@ -23,8 +23,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
@@ -35,7 +37,11 @@ import com.rocketseat.nlw.nearby.data.model.Market
 import com.rocketseat.nlw.nearby.data.model.mock.mockUserLocation
 import com.rocketseat.nlw.nearby.ui.components.category.NearbyCategoryFilterChipList
 import com.rocketseat.nlw.nearby.ui.components.market.NearbyMarketCardList
+import com.rocketseat.nlw.nearby.ui.screen.util.findNortheastPoint
+import com.rocketseat.nlw.nearby.ui.screen.util.findSouthwestPoint
 import com.rocketseat.nlw.nearby.ui.theme.Gray100
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.internal.toImmutableList
 import kotlin.math.roundToInt
 
@@ -112,21 +118,56 @@ fun HomeScreen(
                         }
 
                         if (!uiState.markets.isNullOrEmpty()) {
-                            context.getDrawable(R.drawable.ic_user_location)?.let {
-                                uiState.marketLocation?.toImmutableList()?.forEach { location ->
-                                    Marker(
-
-                                    )
-                                }
-                                Marker(
-                                    state = MarkerState(position = mockUserLocation),
-                                    icon = BitmapDescriptorFactory.fromBitmap(
-                                        it.toBitmap(
-                                            width = density.run { 72.dp.toPx() }.roundToInt(),
-                                            height = density.run { 72.dp.toPx() }.roundToInt()
+                            context.getDrawable(R.drawable.img_pin)?.let {
+                                uiState.marketLocation?.toImmutableList()
+                                    ?.forEachIndexed { index, location ->
+                                        Marker(
+                                            state = MarkerState(position = mockUserLocation),
+                                            icon = BitmapDescriptorFactory.fromBitmap(
+                                                it.toBitmap(
+                                                    width = density.run { 36.dp.toPx() }
+                                                        .roundToInt(),
+                                                    height = density.run { 36.dp.toPx() }
+                                                        .roundToInt()
+                                                )
+                                            ),
+                                            title = uiState.markets[index].name
                                         )
-                                    )
-                                )
+                                    }.also {
+                                        coroutineScope.launch {
+                                            val allMarks = uiState.marketLocation?.plus(
+                                                mockUserLocation
+                                            )
+
+                                            val southwestPoint =
+                                                findSouthwestPoint(allMarks.orEmpty())
+                                            val northeastPoint =
+                                                findNortheastPoint(allMarks.orEmpty())
+
+                                            val centerPointLatitude =
+                                                (southwestPoint.latitude + northeastPoint.latitude) / 2
+                                            val centerPointLongitude =
+                                                (southwestPoint.longitude + northeastPoint.longitude) / 2
+
+                                            val cameraUpdate =
+                                                CameraUpdateFactory.newCameraPosition(
+                                                    CameraPosition(
+                                                        LatLng(
+                                                            centerPointLatitude,
+                                                            centerPointLongitude
+                                                        ),
+                                                        13f,
+                                                        0f,
+                                                        0f
+                                                    )
+                                                )
+                                            delay(200)
+                                            cameraPositionState.animate(
+                                                cameraUpdate,
+                                                durationMs = 500
+                                            )
+                                        }
+                                    }
                             }
                         }
                     }
