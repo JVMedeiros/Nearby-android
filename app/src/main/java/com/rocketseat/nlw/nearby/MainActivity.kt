@@ -14,14 +14,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.rocketseat.nlw.nearby.data.model.Market
-import com.rocketseat.nlw.nearby.ui.screen.HomeScreen
-import com.rocketseat.nlw.nearby.ui.screen.HomeViewModel
-import com.rocketseat.nlw.nearby.ui.screen.MarketDetailsScreen
-import com.rocketseat.nlw.nearby.ui.screen.SplashScreen
-import com.rocketseat.nlw.nearby.ui.screen.WelcomeScreen
-import com.rocketseat.nlw.nearby.ui.screen.route.Home
-import com.rocketseat.nlw.nearby.ui.screen.route.Splash
-import com.rocketseat.nlw.nearby.ui.screen.route.Welcome
+import com.rocketseat.nlw.nearby.ui.route.Home
+import com.rocketseat.nlw.nearby.ui.route.QRCodeScanner
+import com.rocketseat.nlw.nearby.ui.route.Splash
+import com.rocketseat.nlw.nearby.ui.route.Welcome
+import com.rocketseat.nlw.nearby.ui.screen.home.HomeScreen
+import com.rocketseat.nlw.nearby.ui.screen.home.HomeViewModel
+import com.rocketseat.nlw.nearby.ui.screen.market_details.MarketDetailsScreen
+import com.rocketseat.nlw.nearby.ui.screen.market_details.MarketDetailsUiEvent
+import com.rocketseat.nlw.nearby.ui.screen.market_details.MarketDetailsViewModel
+import com.rocketseat.nlw.nearby.ui.screen.qrcode_scanner.QRCodeScannerScreen
+import com.rocketseat.nlw.nearby.ui.screen.splash.SplashScreen
+import com.rocketseat.nlw.nearby.ui.screen.welcome.WelcomeScreen
 import com.rocketseat.nlw.nearby.ui.theme.NearbyTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +38,10 @@ class MainActivity : ComponentActivity() {
 
                 val homeViewModel by viewModels<HomeViewModel>()
                 val homeUiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+
+                val marketDetailsViewModel by viewModels<MarketDetailsViewModel>()
+                val marketDetailsUiState by marketDetailsViewModel.uiState.collectAsStateWithLifecycle()
+
                 NavHost(
                     navController = navController, startDestination = Splash
                 ) {
@@ -57,9 +65,29 @@ class MainActivity : ComponentActivity() {
                     composable<Market> {
                         val selectedMarket = it.toRoute<Market>()
 
-                        MarketDetailsScreen(market = selectedMarket, onNavigateBack = {
-                            navController.popBackStack()
-                        })
+                        MarketDetailsScreen(market = selectedMarket,
+                            uiState = marketDetailsUiState,
+                            onEvent = marketDetailsViewModel::onEvent,
+                            onNavigateToQRCodeScanner = {
+                                navController.navigate(QRCodeScanner)
+                            },
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            })
+                    }
+                    composable<QRCodeScanner> {
+                        QRCodeScannerScreen(
+                            onCompletedScan = { qrCodeContent ->
+                                if (qrCodeContent.isNotEmpty()) {
+                                    marketDetailsViewModel.onEvent(
+                                        MarketDetailsUiEvent.OnFetchCoupon(
+                                            qrCodeContent
+                                        )
+                                    )
+                                    navController.popBackStack()
+                                }
+                            }
+                        )
                     }
                 }
             }
