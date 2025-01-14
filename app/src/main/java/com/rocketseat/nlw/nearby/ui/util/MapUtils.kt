@@ -1,4 +1,4 @@
-package com.rocketseat.nlw.nearby.ui.screen.util
+package com.rocketseat.nlw.nearby.ui.util
 
 import com.google.android.gms.maps.model.LatLng
 
