@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.zxing)
+    implementation(libs.zxing.android.embedded)
     implementation(platform(libs.ktor.bom))
     implementation(libs.bundles.ktor.client)
     implementation(libs.kotlin.serialization)
